@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "testing", "production"]).default("development"),
     PORT: z.coerce.number().positive(),
@@ -19,4 +20,9 @@ if (!parsed.success) {
   process.exit(1);
 }
 
-export const env = parsed.data;
+export const env = parsed.data
+
+// helper functions
+export const isDev = () => env.NODE_ENV === "development";
+export const isProd = () => env.NODE_ENV === "production";
+
