@@ -1,8 +1,9 @@
+import type { Request, Response } from "express";
 import pino from "pino";
-import { isProd} from "./config.js";
+import { isProd, isTest} from "./config.js";
 
 export const logger = pino({
-    level: isProd() ? "info" : "debug",
+    level: isProd() ? "info" : isTest() ? "silent" : "debug",
 
     transport: !isProd() ? {
         target: "pino-pretty",
@@ -14,3 +15,21 @@ export const logger = pino({
     }
         : undefined
 });
+
+export const pinoHttpOptions = {
+    logger,
+
+    customSuccessMessage(req: Request, res: Response) {
+      return `${req.method} ${req.url} ${res.statusCode}`;
+    },
+
+    serializers: {
+      req() {
+        return undefined;
+      },
+
+      res() {
+        return undefined;
+      },
+    },
+  }

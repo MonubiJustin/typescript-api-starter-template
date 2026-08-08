@@ -1,12 +1,10 @@
 import { z } from "zod";
 
-
 const envSchema = z.object({
-  NODE_ENV: z.enum(["development", "testing", "production"]).default("development"),
-    PORT: z.coerce.number().positive(),
-    DB_URI: z.string().refine(uri => uri.startsWith("mongodb://") || uri.startsWith("mongodb+srv://"), {
-      message: "Invalid MongoDB connection string"
-  })
+  NODE_ENV: z
+    .enum(["development", "test", "production"])
+    .default("development"),
+  PORT: z.coerce.number().positive(),
 });
 
 const parsed = envSchema.safeParse(process.env);
@@ -20,9 +18,25 @@ if (!parsed.success) {
   process.exit(1);
 }
 
-export const env = parsed.data
+const env = parsed.data;
+
+type ApiConfig = {
+  port: number;
+  env: string;
+};
+
+type Config = {
+  api: ApiConfig;
+};
+
+export const config = {
+  api: {
+    port: env.PORT,
+    env: env.NODE_ENV,
+  },
+} satisfies Config;
 
 // helper functions
 export const isDev = () => env.NODE_ENV === "development";
 export const isProd = () => env.NODE_ENV === "production";
-
+export const isTest = () => env.NODE_ENV === "test";

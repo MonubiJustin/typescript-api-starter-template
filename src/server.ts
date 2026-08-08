@@ -1,6 +1,5 @@
 import { app } from "./app.js";
-import { env } from "./config/config.js";
-import { connectDB } from "./config/db.js";
+import { config } from "./config/config.js";
 import { logger } from "./config/logger.js";
 
 process.on("uncaughtException", (error) => {
@@ -13,20 +12,12 @@ process.on("unhandledRejection", (reason) => {
   process.exit(1);
 });
 
-const PORT = env.PORT;
+const PORT = config.api.port;
 
-async function start() {
-  try {
-    await connectDB();
-
-    app.listen(PORT, () => {
-      logger.info(`Server running on port ${PORT}`);
-    });
-  } catch (error) {
-    logger.fatal(error, "Application startup failed");
-    process.exit(1);
-  }
+function start() {
+  app.listen(PORT, () => {
+    logger.info(`Server running on port ${PORT}`);
+  });
 }
-
 
 start();
