@@ -8,6 +8,7 @@ import { HttpStatus } from "./utils/http-status.js";
 
 const app = express();
 
+app.use(express.json())
 app.use(pinoHttp(pinoHttpOptions));
 
 app.get("/health", (req: Request, res: Response) => {
