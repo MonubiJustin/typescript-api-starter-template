@@ -1,16 +1,11 @@
-import type { Request, Response, NextFunction } from "express";
+import type { NextFunction,Request, Response } from "express";
 
 import { logger } from "../config/logger.js";
 import { AppError } from "../errors/app-error.js";
 import { HttpStatus } from "../utils/http-status.js";
 
-export function errorHandler(
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  logger.error(err)
+export function errorHandler(err: Error, req: Request, res: Response, _next: NextFunction) {
+  logger.error(err);
 
   // Custom application errors
   if (err instanceof AppError) {

@@ -1,9 +1,7 @@
 import { z } from "zod";
 
 const envSchema = z.object({
-  NODE_ENV: z
-    .enum(["development", "test", "production"])
-    .default("development"),
+  NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   PORT: z.coerce.number().positive(),
 });
 
@@ -20,14 +18,14 @@ if (!parsed.success) {
 
 const env = parsed.data;
 
-type ApiConfig = {
+interface ApiConfig {
   port: number;
   env: string;
-};
+}
 
-type Config = {
+interface Config {
   api: ApiConfig;
-};
+}
 
 export const config = {
   api: {
