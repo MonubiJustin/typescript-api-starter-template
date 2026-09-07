@@ -1,4 +1,4 @@
-import type { NextFunction,Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import type { z } from "zod";
 
 interface ValidationSchemas {

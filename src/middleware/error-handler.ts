@@ -1,4 +1,4 @@
-import type { NextFunction,Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 
 import { logger } from "../config/logger.js";
 import { AppError } from "../errors/app-error.js";
