@@ -12,7 +12,7 @@ process.on("unhandledRejection", (reason) => {
   process.exit(1);
 });
 
-const PORT = config.api.port;
+const PORT = config.server.port;
 
 function start() {
   app.listen(PORT, () => {

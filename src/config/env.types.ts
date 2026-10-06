@@ -1,8 +1,8 @@
-interface ApiConfig {
+interface ServerConfig {
   port: number;
   env: string;
 }
 
 export interface Config {
-  api: ApiConfig;
+  server: ServerConfig;
 }

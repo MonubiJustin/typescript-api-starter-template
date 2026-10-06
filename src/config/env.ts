@@ -21,7 +21,7 @@ if (!parsed.success) {
 const env = parsed.data;
 
 export const config = {
-  api: {
+  server: {
     port: env.PORT,
     env: env.NODE_ENV,
   },
