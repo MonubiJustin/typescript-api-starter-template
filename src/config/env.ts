@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import type { Config } from "./env.types";
+
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   PORT: z.coerce.number().positive(),
@@ -18,15 +20,6 @@ if (!parsed.success) {
 
 const env = parsed.data;
 
-interface ApiConfig {
-  port: number;
-  env: string;
-}
-
-interface Config {
-  api: ApiConfig;
-}
-
 export const config = {
   api: {
     port: env.PORT,
@@ -35,6 +28,6 @@ export const config = {
 } satisfies Config;
 
 // helper functions
-export const isDev = () => env.NODE_ENV === "development";
-export const isProd = () => env.NODE_ENV === "production";
-export const isTest = () => env.NODE_ENV === "test";
+export const isDev = env.NODE_ENV === "development";
+export const isProd = env.NODE_ENV === "production";
+export const isTest = env.NODE_ENV === "test";

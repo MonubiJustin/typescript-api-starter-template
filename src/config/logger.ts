@@ -1,12 +1,12 @@
 import type { Request, Response } from "express";
 import pino from "pino";
 
-import { isProd, isTest } from "./config.js";
+import { isProd, isTest } from "./env.js";
 
 export const logger = pino({
-  level: isProd() ? "info" : isTest() ? "silent" : "debug",
+  level: isProd ? "info" : isTest ? "silent" : "debug",
 
-  transport: !isProd()
+  transport: !isProd
     ? {
         target: "pino-pretty",
         options: {
