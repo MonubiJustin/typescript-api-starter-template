@@ -5,12 +5,25 @@ import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-proto";
 import { PeriodicExportingMetricReader } from "@opentelemetry/sdk-metrics";
 import { NodeSDK } from "@opentelemetry/sdk-node";
 
-const sdk = new NodeSDK({
-  traceExporter: new OTLPTraceExporter(),
-  metricReader: new PeriodicExportingMetricReader({
-    exporter: new OTLPMetricExporter(),
-  }),
-  instrumentations: [getNodeAutoInstrumentations()],
-});
+import { config } from "../config/env.js";
 
-sdk.start();
+if (config.telemetry.enabled) {
+  const endpoint = config.telemetry.otlpEndpoint.replace(/\/$/, "");
+
+  const sdk = new NodeSDK({
+    traceExporter: new OTLPTraceExporter({
+      headers: config.telemetry.otlpHeaders,
+      url: `${endpoint}/v1/traces`,
+    }),
+    metricReader: new PeriodicExportingMetricReader({
+      exporter: new OTLPMetricExporter({
+        headers: config.telemetry.otlpHeaders,
+        url: `${endpoint}/v1/metrics`,
+      }),
+      exportIntervalMillis: config.telemetry.metricExportInterval,
+    }),
+    instrumentations: [getNodeAutoInstrumentations()],
+  });
+
+  sdk.start();
+}

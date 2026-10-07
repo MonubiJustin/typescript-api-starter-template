@@ -59,6 +59,23 @@ Extend the existing environment validation in `src/config/env.ts` and `src/confi
 
 Keep credentials, authorization headers, private collector URLs, customer identifiers, and real request payloads out of Git. Add only safe placeholder names to `.env.example`; inject production values through the deployment platform or a secret manager.
 
+This repository currently validates these baseline variables:
+
+```dotenv
+OTEL_ENABLED=true
+OTEL_SERVICE_NAME=mpaps-api
+OTEL_SERVICE_VERSION=1.0.0
+OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp.nr-data.net:4318
+OTEL_EXPORTER_OTLP_HEADERS=api-key=<new-relic-license-key>
+OTEL_METRIC_EXPORT_INTERVAL=60000
+```
+
+Use `https://otlp.eu01.nr-data.net:4318` for New Relic's EU endpoint when
+applicable. Keep the license key in deployment secrets, not in `.env.example`
+or committed files. The endpoint and header are passed to the OTLP/HTTP trace
+and metric exporters; New Relic delivery is not considered verified until data
+is visible in the target account.
+
 ## 3. Create an observability boundary
 
 **Importance: high.** A dedicated boundary keeps initialization, provider-specific configuration, shutdown, testing, and future backend changes manageable.
