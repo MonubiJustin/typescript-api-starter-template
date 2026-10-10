@@ -12,7 +12,12 @@ interface TelemetryConfig {
   metricExportInterval: number;
 }
 
+interface DatabaseConfig {
+  url: string;
+}
+
 export interface Config {
   server: ServerConfig;
   telemetry: TelemetryConfig;
+  db: DatabaseConfig;
 }

@@ -36,9 +36,10 @@ const envSchema = z.object({
   OTEL_ENABLED: booleanFromString,
   OTEL_SERVICE_NAME: z.string().min(1).default("node-api"),
   OTEL_SERVICE_VERSION: z.string().min(1).default("1.0.0"),
-  OTEL_EXPORTER_OTLP_ENDPOINT: z.string().url().default("http://localhost:4318"),
+  OTEL_EXPORTER_OTLP_ENDPOINT: z.url().default("http://localhost:4318"),
   OTEL_EXPORTER_OTLP_HEADERS: otlpHeaders,
   OTEL_METRIC_EXPORT_INTERVAL: z.coerce.number().int().positive().default(60_000),
+  DATABASE_URL: z.string().startsWith("postgres://"),
 });
 
 const parsed = envSchema.safeParse(process.env);
@@ -66,6 +67,9 @@ export const config = {
     otlpEndpoint: env.OTEL_EXPORTER_OTLP_ENDPOINT,
     otlpHeaders: env.OTEL_EXPORTER_OTLP_HEADERS,
     metricExportInterval: env.OTEL_METRIC_EXPORT_INTERVAL,
+  },
+  db: {
+    url: env.DATABASE_URL,
   },
 } satisfies Config;
 
