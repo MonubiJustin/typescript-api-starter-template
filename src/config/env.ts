@@ -34,7 +34,7 @@ const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   PORT: z.coerce.number().positive(),
   OTEL_ENABLED: booleanFromString,
-  OTEL_SERVICE_NAME: z.string().min(1).default("mpaps-api"),
+  OTEL_SERVICE_NAME: z.string().min(1).default("node-api"),
   OTEL_SERVICE_VERSION: z.string().min(1).default("1.0.0"),
   OTEL_EXPORTER_OTLP_ENDPOINT: z.string().url().default("http://localhost:4318"),
   OTEL_EXPORTER_OTLP_HEADERS: otlpHeaders,

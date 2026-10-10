@@ -1,3 +1,4 @@
+import { diag, DiagConsoleLogger, DiagLogLevel } from "@opentelemetry/api";
 import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
 import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-proto";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-proto";
@@ -8,6 +9,12 @@ import { NodeSDK } from "@opentelemetry/sdk-node";
 import { config } from "../config/env.js";
 
 const endpoint = config.telemetry.otlpEndpoint.replace(/\/$/, "");
+
+// OpenTelemetry's own diagnostics are useful while wiring instrumentation up,
+// but they are far too noisy to ship to production logs.
+if (config.server.env !== "production") {
+  diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+}
 
 const sdk = config.telemetry.enabled
   ? new NodeSDK({

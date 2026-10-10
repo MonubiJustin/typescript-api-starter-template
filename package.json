@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "bun --watch --import ./src/instrumentation/instrumentation.ts src/server.ts",
-    "build": "bun build src/server.ts --outdir dist --target=bun --bundler",
-    "start": "bun run dist/server.js",
+    "build": "bun build src/server.ts src/instrumentation/instrumentation.ts --outdir dist --target=bun --packages=external --root src",
+    "start": "bun --import ./dist/instrumentation/instrumentation.js ./dist/server.js",
     "check": "tsc --noEMit",
     "test": "vitest --watch",
     "lint": "eslint . --max-warnings=0",
